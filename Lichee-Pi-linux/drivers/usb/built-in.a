@@ -1,0 +1,116 @@
+!<thin>
+//                                              1018      `
+core/usb.o/
+core/hub.o/
+core/hcd.o/
+core/urb.o/
+core/message.o/
+core/driver.o/
+core/config.o/
+core/file.o/
+core/buffer.o/
+core/sysfs.o/
+core/endpoint.o/
+core/devio.o/
+core/notify.o/
+core/generic.o/
+core/quirks.o/
+core/devices.o/
+core/phy.o/
+core/port.o/
+core/of.o/
+phy/phy.o/
+phy/of.o/
+phy/phy-generic.o/
+host/ehci-hcd.o/
+host/ehci-platform.o/
+host/ohci-hcd.o/
+host/ohci-platform.o/
+storage/scsiglue.o/
+storage/protocol.o/
+storage/transport.o/
+storage/usb.o/
+storage/initializers.o/
+storage/sierra_ms.o/
+storage/option_ms.o/
+storage/usual-tables.o/
+musb/musb_core.o/
+musb/musb_trace.o/
+musb/musb_virthub.o/
+musb/musb_host.o/
+musb/musb_gadget_ep0.o/
+musb/musb_gadget.o/
+musb/musb_debugfs.o/
+musb/sunxi.o/
+gadget/usbstring.o/
+gadget/config.o/
+gadget/epautoconf.o/
+gadget/composite.o/
+gadget/functions.o/
+gadget/configfs.o/
+gadget/u_f.o/
+gadget/udc/core.o/
+gadget/udc/trace.o/
+gadget/function/f_acm.o/
+gadget/function/u_serial.o/
+gadget/function/u_ether.o/
+gadget/function/f_ecm.o/
+gadget/legacy/cdc2.o/
+common/common.o/
+/0              0           0     0     644     18012     `
+/12             0           0     0     644     56632     `
+/24             0           0     0     644     35324     `
+/36             0           0     0     644     14012     `
+/48             0           0     0     644     24392     `
+/64             0           0     0     644     20596     `
+/79             0           0     0     644     13888     `
+/94             0           0     0     644     5140      `
+/107            0           0     0     644     3104      `
+/122            0           0     0     644     23308     `
+/136            0           0     0     644     4624      `
+/153            0           0     0     644     33064     `
+/167            0           0     0     644     2884      `
+/182            0           0     0     644     3552      `
+/198            0           0     0     644     6980      `
+/213            0           0     0     644     7736      `
+/229            0           0     0     644     5384      `
+/241            0           0     0     644     9172      `
+/254            0           0     0     644     3044      `
+/265            0           0     0     644     11656     `
+/276            0           0     0     644     2248      `
+/286            0           0     0     644     9856      `
+/305            0           0     0     644     51220     `
+/322           /0           0     0     644     9108      `
+/344            0           0     0     644     35828     `
+/361           /0           0     0     644     8828      `
+/383            0           0     0     644     8972      `
+/403            0           0     0     644     3508      `
+/423            0           0     0     644     12784     `
+/444            0           0     0     644     32536     `
+/459            0           0     0     644     1980      `
+/483            0           0     0     644     3624      `
+/504            0           0     0     644     3016      `
+/525            0           0     0     644     9336      `
+/549            0           0     0     644     35764     `
+/567            0           0     0     644     1396      `
+/586            0           0     0     644     6284      `
+/607            0           0     0     644     22568     `
+/625            0           0     0     644     8556      `
+/649            0           0     0     644     19356     `
+/669            0           0     0     644     8596      `
+/690            0           0     0     644     14364     `
+/704            0           0     0     644     1868      `
+/724            0           0     0     644     4776      `
+/741            0           0     0     644     3116      `
+/762            0           0     0     644     24112     `
+/782            0           0     0     644     4460      `
+/802            0           0     0     644     26608     `
+/821            0           0     0     644     1776      `
+/835            0           0     0     644     27304     `
+/854            0           0     0     644     840       `
+/874            0           0     0     644     9080      `
+/899            0           0     0     644     13304     `
+/927            0           0     0     644     16344     `
+/954            0           0     0     644     11496     `
+/979            0           0     0     644     8740      `
+/1001           0           0     0     644     8236      `

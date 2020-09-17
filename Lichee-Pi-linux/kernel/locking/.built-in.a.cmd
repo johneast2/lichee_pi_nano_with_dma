@@ -1,0 +1,1 @@
+cmd_kernel/locking/built-in.a := rm -f kernel/locking/built-in.a; arm-linux-gnueabi-ar rcSTPD kernel/locking/built-in.a kernel/locking/mutex.o kernel/locking/semaphore.o kernel/locking/rwsem.o kernel/locking/percpu-rwsem.o kernel/locking/rwsem-xadd.o kernel/locking/rtmutex.o

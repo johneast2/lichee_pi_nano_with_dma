@@ -1,0 +1,6 @@
+kernel/sound/soc/snd-soc-core.ko
+kernel/sound/soc/generic/snd-soc-simple-card-utils.ko
+kernel/sound/soc/generic/snd-soc-simple-card.ko
+kernel/sound/soc/sunxi/sun4i-codec.ko
+kernel/sound/soc/sunxi/sun4i-i2s.ko
+kernel/sound/soc/sunxi/sun4i-spdif.ko

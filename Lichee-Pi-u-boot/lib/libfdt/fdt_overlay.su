@@ -1,0 +1,6 @@
+fdt_overlay.c:110:12:overlay_phandle_add_offset	48	static
+fdt_overlay.c:150:12:overlay_adjust_node_phandles	16	static
+fdt_overlay.c:214:12:overlay_update_local_node_references	80	static
+fdt_overlay.c:52:12:overlay_get_target	40	static
+fdt_overlay.c:550:12:overlay_apply_node	48	static
+fdt_overlay.c:813:5:fdt_overlay_apply	104	static

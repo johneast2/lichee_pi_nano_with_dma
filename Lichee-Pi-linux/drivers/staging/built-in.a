@@ -1,0 +1,12 @@
+!<thin>
+//                                              94        `
+fbtft/fbtft-core.o/
+fbtft/fbtft-sysfs.o/
+fbtft/fbtft-bus.o/
+fbtft/fbtft-io.o/
+fbtft/flexfb.o/
+/0              0           0     0     644     23140     `
+/20             0           0     0     644     4688      `
+/41             0           0     0     644     7808      `
+/60             0           0     0     644     6592      `
+/78             0           0     0     644     15164     `

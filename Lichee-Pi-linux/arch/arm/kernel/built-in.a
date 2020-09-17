@@ -1,0 +1,66 @@
+!<thin>
+//                                              392       `
+elf.o/
+entry-common.o/
+irq.o/
+opcodes.o/
+process.o/
+ptrace.o/
+reboot.o/
+return_address.o/
+setup.o/
+signal.o/
+sigreturn_codes.o/
+stacktrace.o/
+sys_arm.o/
+time.o/
+traps.o/
+atags_parse.o/
+entry-armv.o/
+bugs.o/
+cpuidle.o/
+armksyms.o/
+module.o/
+sleep.o/
+suspend.o/
+sys_oabi-compat.o/
+unwind.o/
+devtree.o/
+perf_regs.o/
+perf_callchain.o/
+perf_event_xscale.o/
+perf_event_v6.o/
+perf_event_v7.o/
+io.o/
+/0              0           0     0     644     2660      `
+/7              0           0     0     644     26520     `
+/23             0           0     0     644     2324      `
+/30             0           0     0     644     1740      `
+/41             0           0     0     644     8720      `
+/52             0           0     0     644     6972      `
+/62             0           0     0     644     3356      `
+/72             0           0     0     644     1492      `
+/90             0           0     0     644     19468     `
+/99             0           0     0     644     6712      `
+/109            0           0     0     644     864       `
+/128            0           0     0     644     3376      `
+/142            0           0     0     644     1272      `
+/153            0           0     0     644     2152      `
+/161            0           0     0     644     12056     `
+/170            0           0     0     644     5244      `
+/185            0           0     0     644     8108      `
+/199            0           0     0     644     1588      `
+/207            0           0     0     644     2892      `
+/218            0           0     0     644     18900     `
+/230            0           0     0     644     4844      `
+/240            0           0     0     644     1572      `
+/249            0           0     0     644     2760      `
+/260            0           0     0     644     7820      `
+/279            0           0     0     644     6136      `
+/289            0           0     0     644     4520      `
+/300            0           0     0     644     1868      `
+/313            0           0     0     644     2728      `
+/331            0           0     0     644     852       `
+/352           /0           0     0     644     848       `
+/369           /0           0     0     644     848       `
+/386            0           0     0     644     2880      `

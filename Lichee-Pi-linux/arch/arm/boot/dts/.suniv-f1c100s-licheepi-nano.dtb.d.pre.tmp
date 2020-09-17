@@ -1,0 +1,7 @@
+suniv-f1c100s-licheepi-nano.o: \
+ arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts \
+ arch/arm/boot/dts/suniv-f1c100s.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/suniv-ccu-f1c100s.h \
+ scripts/dtc/include-prefixes/dt-bindings/reset/suniv-ccu-f1c100s.h \
+ scripts/dtc/include-prefixes/dt-bindings/dma/sun4i-a10.h \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h

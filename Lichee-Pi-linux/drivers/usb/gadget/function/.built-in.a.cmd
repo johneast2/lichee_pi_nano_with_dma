@@ -1,0 +1,1 @@
+cmd_drivers/usb/gadget/function/built-in.a := rm -f drivers/usb/gadget/function/built-in.a; arm-linux-gnueabi-ar rcSTPD drivers/usb/gadget/function/built-in.a drivers/usb/gadget/function/f_acm.o drivers/usb/gadget/function/u_serial.o drivers/usb/gadget/function/u_ether.o drivers/usb/gadget/function/f_ecm.o

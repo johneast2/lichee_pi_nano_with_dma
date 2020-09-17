@@ -1,0 +1,7 @@
+kernel/drivers/input/input-core.ko
+kernel/drivers/input/ff-memless.ko
+kernel/drivers/input/input-polldev.ko
+kernel/drivers/input/input-leds.ko
+kernel/drivers/input/evdev.ko
+kernel/drivers/input/keyboard/sun4i-lradc-keys.ko
+kernel/drivers/input/touchscreen/of_touchscreen.ko

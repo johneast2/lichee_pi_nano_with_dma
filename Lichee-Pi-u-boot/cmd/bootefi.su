@@ -1,0 +1,4 @@
+bootefi.c:31:13:efi_init_obj_list	8	static
+bootefi.c:153:21:do_bootefi_exec	512	static
+bootefi.c:308:12:do_bootefi	32	static
+bootefi.c:430:6:efi_set_bootdev	56	static

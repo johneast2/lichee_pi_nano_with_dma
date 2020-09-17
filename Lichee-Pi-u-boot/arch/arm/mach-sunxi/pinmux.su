@@ -1,0 +1,8 @@
+pinmux.c:16:6:sunxi_gpio_set_cfgbank	8	static
+pinmux.c:24:6:sunxi_gpio_set_cfgpin	16	static
+pinmux.c:32:5:sunxi_gpio_get_cfgbank	0	static
+pinmux.c:44:5:sunxi_gpio_get_cfgpin	8	static
+pinmux.c:52:5:sunxi_gpio_set_drv	16	static
+pinmux.c:64:5:sunxi_gpio_set_pull	16	static
+pinmux.c:76:5:sunxi_gpio_parse_pin_name	8	static
+pinmux.c:92:5:sunxi_gpio_setup_dt_pins	48	static

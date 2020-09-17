@@ -1,0 +1,3 @@
+dump.c:13:13:show_devices	24	static
+dump.c:45:6:dm_dump_all	16	static
+dump.c:74:6:dm_dump_uclass	32	static

@@ -1,0 +1,1 @@
+git add addall boot.scr buildroot.config build.sh linux.config linux-licheepi_nano_defconfig linux-licheepi_nano_spiflash_defconfig linux-suniv-f1c100s.dtsi linux-suniv-f1c100s-licheepi-nano-with-lcd.dts README.md scripts/* setcurrent tf_boot.cmd uboot-licheepi_nano_defconfig uboot-licheepi_nano_spiflash_defconfig usb.patch

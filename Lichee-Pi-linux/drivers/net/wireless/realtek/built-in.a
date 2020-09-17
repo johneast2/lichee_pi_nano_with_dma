@@ -1,0 +1,56 @@
+!<thin>
+//                                              596       `
+rtl818x/rtl8187/dev.o/
+rtl818x/rtl8187/rtl8225.o/
+rtl818x/rtl8187/leds.o/
+rtl818x/rtl8187/rfkill.o/
+rtlwifi/base.o/
+rtlwifi/cam.o/
+rtlwifi/core.o/
+rtlwifi/debug.o/
+rtlwifi/efuse.o/
+rtlwifi/ps.o/
+rtlwifi/rc.o/
+rtlwifi/regd.o/
+rtlwifi/stats.o/
+rtlwifi/usb.o/
+rtlwifi/rtl8192c/main.o/
+rtlwifi/rtl8192c/dm_common.o/
+rtlwifi/rtl8192c/fw_common.o/
+rtlwifi/rtl8192c/phy_common.o/
+rtlwifi/rtl8192cu/dm.o/
+rtlwifi/rtl8192cu/hw.o/
+rtlwifi/rtl8192cu/led.o/
+rtlwifi/rtl8192cu/mac.o/
+rtlwifi/rtl8192cu/phy.o/
+rtlwifi/rtl8192cu/rf.o/
+rtlwifi/rtl8192cu/sw.o/
+rtlwifi/rtl8192cu/table.o/
+rtlwifi/rtl8192cu/trx.o/
+/0              0           0     0     644     25096     `
+/23             0           0     0     644     16960     `
+/50             0           0     0     644     4572      `
+/74             0           0     0     644     2340      `
+/100            0           0     0     644     37508     `
+/116            0           0     0     644     7736      `
+/131            0           0     0     644     27928     `
+/147            0           0     0     644     13828     `
+/164            0           0     0     644     18912     `
+/181            0           0     0     644     12984     `
+/195            0           0     0     644     4308      `
+/209            0           0     0     644     6092      `
+/225            0           0     0     644     3944      `
+/242            0           0     0     644     16120     `
+/257            0           0     0     644     1564      `
+/282            0           0     0     644     20928     `
+/312            0           0     0     644     12968     `
+/342            0           0     0     644     29932     `
+/373            0           0     0     644     2316      `
+/397            0           0     0     644     31860     `
+/421            0           0     0     644     2380      `
+/446            0           0     0     644     12068     `
+/471            0           0     0     644     9780      `
+/496            0           0     0     644     6784      `
+/520            0           0     0     644     11828     `
+/544            0           0     0     644     16872     `
+/571            0           0     0     644     7596      `

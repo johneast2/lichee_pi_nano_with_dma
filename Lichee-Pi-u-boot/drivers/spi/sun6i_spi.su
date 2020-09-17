@@ -1,0 +1,7 @@
+sun6i_spi.c:497:12:sunxi_spi_set_mode	0	static
+sun6i_spi.c:399:12:sunxi_spi_release_bus	8	static
+sun6i_spi.c:409:12:sunxi_spi_set_speed	24	static
+sun6i_spi.c:369:12:sunxi_spi_claim_bus	16	static
+sun6i_spi.c:305:12:sunxi_spi_ofdata_to_platdata	48	static
+sun6i_spi.c:346:12:sunxi_spi_probe	8	static
+sun6i_spi.c:210:12:sunxi_spi_xfer	64	static

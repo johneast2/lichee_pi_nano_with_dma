@@ -1,0 +1,35 @@
+  CALL    scripts/atomic/check-atomics.sh
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  CC      drivers/dma/sun4i-dma.o
+drivers/dma/sun4i-dma.c: In function ‘sun4i_dma_probe’:
+drivers/dma/sun4i-dma.c:1209:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  struct sun4i_dma_dev *priv;
+  ^~~~~~
+  AR      drivers/dma/built-in.a
+  CC      drivers/usb/musb/sunxi.o
+  AR      drivers/usb/musb/built-in.a
+  AR      drivers/usb/built-in.a
+  AR      drivers/built-in.a
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  KSYM    .tmp_kallsyms1.o
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+  OBJCOPY arch/arm/boot/Image
+  Building modules, stage 2.
+  MODPOST 9 modules
+  Kernel: arch/arm/boot/Image is ready
+  GZIP    arch/arm/boot/compressed/piggy_data
+  AS      arch/arm/boot/compressed/piggy.o
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready

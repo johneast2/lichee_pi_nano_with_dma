@@ -1,0 +1,10 @@
+nvedit.c:213:12:_do_env_set.isra.0.constprop	64	static
+nvedit.c:74:5:get_env_id	0	static
+nvedit.c:285:5:env_set	24	static
+nvedit.c:306:5:env_set_ulong	16	static
+nvedit.c:321:5:env_set_hex	40	static
+nvedit.c:734:5:envmatch	24	static
+nvedit.c:651:5:env_get_f	40	static
+nvedit.c:627:7:env_get	56	static
+nvedit.c:329:7:env_get_hex	24	static
+nvedit.c:695:7:env_get_ulong	16	static

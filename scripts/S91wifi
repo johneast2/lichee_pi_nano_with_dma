@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# Ensure HWDB is built at startup
+#
+
+start() {
+        printf "Network Setup..."
+
+	# Load kmods
+	modprobe lib80211_crypt_ccmp.ko
+	modprobe lib80211_crypt_wep.ko
+	modprobe lib80211.ko
+	modprobe r8188eu.ko
+
+	if grep -q nameserver /etc/resolv.confile.txt; then
+		echo Nameservers already exist
+	else
+		echo Adding Nameservers
+		echo nameserver 1.1.1.1 >  /etc/resolv.conf
+		echo nameserver 1.0.0.1 >> /etc/resolv.conf
+	fi
+        echo "OK"
+}
+
+stop() {
+        echo "OK"
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        stop
+        start
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+~
+

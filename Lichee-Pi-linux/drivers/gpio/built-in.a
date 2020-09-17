@@ -1,0 +1,15 @@
+!<thin>
+//                                              98        `
+gpiolib.o/
+gpiolib-devres.o/
+gpiolib-legacy.o/
+gpiolib-devprop.o/
+gpiolib-of.o/
+gpiolib-sysfs.o/
+
+/0              0           0     0     644     61656     `
+/11             0           0     0     644     9252      `
+/29             0           0     0     644     3584      `
+/47             0           0     0     644     2120      `
+/66             0           0     0     644     9744      `
+/80            /0           0     0     644     12384     `

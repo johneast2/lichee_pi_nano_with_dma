@@ -1,0 +1,8 @@
+sunxi_mmc.c:258:12:sunxi_mmc_core_init	16	static
+sunxi_mmc.c:41:12:sunxi_mmc_getcd_gpio	8	static
+sunxi_mmc.c:459:12:sunxi_mmc_getcd_legacy	8	static
+sunxi_mmc.c:186:12:mmc_update_clk.isra.1	24	static
+sunxi_mmc.c:96:12:mmc_set_mod_clk	24	static
+sunxi_mmc.c:444:12:sunxi_mmc_set_ios_legacy	24	static
+sunxi_mmc.c:451:12:sunxi_mmc_send_cmd_legacy	40	static
+sunxi_mmc.c:478:13:sunxi_mmc_init	32	static

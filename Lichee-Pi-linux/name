@@ -1,0 +1,2 @@
+Documentation/powerpc/eeh-pci-error-recovery.txt:                  struct device_driver->remove() which is just
+Documentation/powerpc/eeh-pci-error-recovery.txt:    struct device_driver->remove() is just pci_device_remove()

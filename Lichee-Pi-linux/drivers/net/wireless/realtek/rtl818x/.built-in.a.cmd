@@ -1,0 +1,1 @@
+cmd_drivers/net/wireless/realtek/rtl818x/built-in.a := rm -f drivers/net/wireless/realtek/rtl818x/built-in.a; arm-linux-gnueabi-ar rcSTPD drivers/net/wireless/realtek/rtl818x/built-in.a drivers/net/wireless/realtek/rtl818x/rtl8187/built-in.a

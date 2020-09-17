@@ -1,0 +1,2 @@
+efi_image_loader.c:71:13:invalidate_icache_all	0	static
+efi_image_loader.c:81:7:efi_load_pe	72	static

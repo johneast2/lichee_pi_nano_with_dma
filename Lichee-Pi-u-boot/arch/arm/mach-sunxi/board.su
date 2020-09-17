@@ -1,0 +1,4 @@
+board.c:159:6:s_init	8	static
+board.c:224:10:sunxi_get_boot_device	8	static
+board.c:310:6:reset_cpu	4	static
+board.c:337:6:enable_caches	8	static

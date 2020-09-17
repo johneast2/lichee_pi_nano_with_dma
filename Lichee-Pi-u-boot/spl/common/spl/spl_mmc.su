@@ -1,0 +1,2 @@
+spl_mmc.c:284:5:spl_mmc_load_image	24	static
+spl_mmc.c:224:5:spl_start_uboot	0	static

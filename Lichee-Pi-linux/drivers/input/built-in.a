@@ -1,0 +1,23 @@
+!<thin>
+//                                              162       `
+input.o/
+input-compat.o/
+input-mt.o/
+ff-core.o/
+ff-memless.o/
+input-polldev.o/
+input-leds.o/
+evdev.o/
+keyboard/sun4i-lradc-keys.o/
+touchscreen/of_touchscreen.o/
+
+/0              0           0     0     644     39688     `
+/9              0           0     0     644     2700      `
+/25             0           0     0     644     7720      `
+/37             0           0     0     644     5344      `
+/48             0           0     0     644     6928      `
+/62            /0           0     0     644     7432      `
+/79             0           0     0     644     5956      `
+/93             0           0     0     644     17616     `
+/102            0           0     0     644     6936      `
+/131            0           0     0     644     4800      `

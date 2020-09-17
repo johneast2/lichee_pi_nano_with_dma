@@ -1,0 +1,1 @@
+cmd_drivers/crypto/sunxi-ss/built-in.a := rm -f drivers/crypto/sunxi-ss/built-in.a; arm-linux-gnueabi-ar rcSTPD drivers/crypto/sunxi-ss/built-in.a drivers/crypto/sunxi-ss/sun4i-ss-core.o drivers/crypto/sunxi-ss/sun4i-ss-hash.o drivers/crypto/sunxi-ss/sun4i-ss-cipher.o

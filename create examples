@@ -1,0 +1,164 @@
+// create examples
+
+// from musb_cppi41.c
+
+struct dma_controller *
+cppi41_dma_controller_create(struct musb *musb, void __iomem *base)
+{
+	struct cppi41_dma_controller *controller;
+	int channel_size;
+	int ret = 0;
+
+	if (!musb->controller->parent->of_node) {
+		dev_err(musb->controller, "Need DT for the DMA engine.\n");
+		return NULL;
+	}
+
+	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
+	if (!controller)
+		goto kzalloc_fail;
+
+	hrtimer_init(&controller->early_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+	controller->early_tx.function = cppi41_recheck_tx_req;
+	INIT_LIST_HEAD(&controller->early_tx_list);
+
+	controller->controller.channel_alloc = cppi41_dma_channel_allocate;
+	controller->controller.channel_release = cppi41_dma_channel_release;
+	controller->controller.channel_program = cppi41_dma_channel_program;
+	controller->controller.channel_abort = cppi41_dma_channel_abort;
+	controller->controller.is_compatible = cppi41_is_compatible;
+	controller->controller.musb = musb;
+
+	if (musb->ops->quirks & MUSB_DA8XX) {
+		controller->tdown_reg = DA8XX_USB_TEARDOWN;
+		controller->autoreq_reg = DA8XX_USB_AUTOREQ;
+		controller->set_dma_mode = da8xx_set_dma_mode;
+		controller->num_channels = DA8XX_DMA_NUM_CHANNELS;
+	} else {
+		controller->tdown_reg = USB_TDOWN;
+		controller->autoreq_reg = USB_CTRL_AUTOREQ;
+		controller->set_dma_mode = cppi41_set_dma_mode;
+		controller->num_channels = MUSB_DMA_NUM_CHANNELS;
+	}
+
+	channel_size = controller->num_channels *
+			sizeof(struct cppi41_dma_channel);
+	controller->rx_channel = kzalloc(channel_size, GFP_KERNEL);
+	if (!controller->rx_channel)
+		goto rx_channel_alloc_fail;
+	controller->tx_channel = kzalloc(channel_size, GFP_KERNEL);
+	if (!controller->tx_channel)
+		goto tx_channel_alloc_fail;
+
+	ret = cppi41_dma_controller_start(controller);
+	if (ret)
+		goto plat_get_fail;
+	return &controller->controller;
+
+plat_get_fail:
+	kfree(controller->tx_channel);
+tx_channel_alloc_fail:
+	kfree(controller->rx_channel);
+rx_channel_alloc_fail:
+	kfree(controller);
+kzalloc_fail:
+	if (ret == -EPROBE_DEFER)
+		return ERR_PTR(ret);
+	return NULL;
+}
+
+////// end from musb_cppi41.c
+
+
+// from musbhsdma.c
+struct dma_controller *musbhs_dma_controller_create(struct musb *musb,
+						    void __iomem *base)
+{
+	struct musb_dma_controller *controller;
+	struct device *dev = musb->controller;
+	struct platform_device *pdev = to_platform_device(dev);
+	int irq = platform_get_irq_byname(pdev, "dma");
+
+	if (irq <= 0) {
+		dev_err(dev, "No DMA interrupt line!\n");
+		return NULL;
+	}
+
+	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
+	if (!controller)
+		return NULL;
+
+	controller->channel_count = MUSB_HSDMA_CHANNELS;
+	controller->private_data = musb;
+	controller->base = base;
+
+	controller->controller.channel_alloc = dma_channel_allocate;
+	controller->controller.channel_release = dma_channel_release;
+	controller->controller.channel_program = dma_channel_program;
+	controller->controller.channel_abort = dma_channel_abort;
+
+	if (request_irq(irq, dma_controller_irq, 0,
+			dev_name(musb->controller), &controller->controller)) {
+		dev_err(dev, "request_irq %d failed!\n", irq);
+		musb_dma_controller_destroy(&controller->controller);
+
+		return NULL;
+	}
+
+	controller->irq = irq;
+
+	return &controller->controller;
+}
+
+// end from musbhsdma.c
+
+// from ux500_dma.c
+
+struct dma_controller *
+ux500_dma_controller_create(struct musb *musb, void __iomem *base)
+{
+	struct ux500_dma_controller *controller;
+	struct platform_device *pdev = to_platform_device(musb->controller);
+	struct resource	*iomem;
+	int ret;
+
+	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
+	if (!controller)
+		goto kzalloc_fail;
+
+	controller->private_data = musb;
+
+	/* Save physical address for DMA controller. */
+	iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+	if (!iomem) {
+		dev_err(musb->controller, "no memory resource defined\n");
+		goto plat_get_fail;
+	}
+
+	controller->phy_base = (dma_addr_t) iomem->start;
+
+	controller->controller.channel_alloc = ux500_dma_channel_allocate;
+	controller->controller.channel_release = ux500_dma_channel_release;
+	controller->controller.channel_program = ux500_dma_channel_program;
+	controller->controller.channel_abort = ux500_dma_channel_abort;
+	controller->controller.is_compatible = ux500_dma_is_compatible;
+
+	ret = ux500_dma_controller_start(controller);
+	if (ret)
+		goto plat_get_fail;
+	return &controller->controller;
+
+plat_get_fail:
+	kfree(controller);
+kzalloc_fail:
+	return NULL;
+}
+
+// end from ux500_dma.c
+
+
+created sunxi_dma.h, basically a copy of cppi_dma.h
+
+next I want to look at /* CPPI DMA controller object */
+
+

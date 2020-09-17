@@ -1,0 +1,5 @@
+fs.c:14:12:do_size_wrapper	16	static
+fs.c:27:12:do_load_wrapper	32	static
+fs.c:47:12:do_save_wrapper	16	static
+fs.c:64:12:do_ls_wrapper	16	static
+fs.c:78:12:do_fstype_wrapper	8	static

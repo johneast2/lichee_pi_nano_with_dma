@@ -1,0 +1,1 @@
+cmd_drivers/irqchip/built-in.a := rm -f drivers/irqchip/built-in.a; arm-linux-gnueabi-ar rcSTPD drivers/irqchip/built-in.a drivers/irqchip/irqchip.o drivers/irqchip/irq-sun4i.o drivers/irqchip/irq-sunxi-nmi.o

@@ -1,0 +1,17 @@
+part_efi.c:52:14:print_efiname	20	static
+part_efi.c:332:12:part_test_efi	24	dynamic
+part_efi.c:138:12:validate_gpt_entries	16	static
+part_efi.c:75:12:validate_gpt_header	48	static
+part_efi.c:925:12:is_gpt_valid	56	dynamic
+part_efi.c:1037:12:is_pte_valid	32	static
+part_efi.c:212:6:part_print_efi	104	dynamic
+part_efi.c:269:5:part_get_info_efi	48	dynamic
+part_efi.c:185:5:get_disk_guid	48	dynamic
+part_efi.c:383:5:write_gpt_table	72	dynamic
+part_efi.c:431:5:gpt_fill_pte	72	static
+part_efi.c:598:5:gpt_fill_header	32	static
+part_efi.c:622:5:gpt_restore	48	static
+part_efi.c:680:5:gpt_verify_headers	32	static
+part_efi.c:704:5:gpt_verify_partitions	96	static
+part_efi.c:782:5:is_valid_gpt_buf	24	static
+part_efi.c:803:5:write_mbr_and_gpt_partitions	72	static

@@ -1,0 +1,10 @@
+sunxi_gpio.c:195:12:sunxi_gpio_set_value	16	static
+sunxi_gpio.c:183:12:sunxi_gpio_get_value	16	static
+sunxi_gpio.c:205:12:sunxi_gpio_get_function	16	static
+sunxi_gpio.c:171:12:sunxi_gpio_direction_output	24	static
+sunxi_gpio.c:162:12:sunxi_gpio_direction_input	16	static
+sunxi_gpio.c:264:12:gpio_sunxi_probe	16	static
+sunxi_gpio.c:287:12:gpio_sunxi_bind	48	static
+sunxi_gpio.c:219:12:sunxi_gpio_xlate	16	static
+sunxi_gpio.c:124:5:sunxi_name_to_gpio_bank	0	static
+sunxi_gpio.c:140:5:sunxi_name_to_gpio	16	static

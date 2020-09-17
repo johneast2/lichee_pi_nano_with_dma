@@ -1,0 +1,9 @@
+kernel/fs/fuse/fuse.ko
+kernel/crypto/echainiv.ko
+kernel/drivers/video/backlight/lcd.ko
+kernel/drivers/usb/mon/usbmon.ko
+kernel/drivers/input/touchscreen/goodix.ko
+kernel/drivers/staging/rtl8188eu/r8188eu.ko
+kernel/net/wireless/lib80211.ko
+kernel/net/wireless/lib80211_crypt_wep.ko
+kernel/net/wireless/lib80211_crypt_ccmp.ko

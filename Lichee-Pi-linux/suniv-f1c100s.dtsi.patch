@@ -1,0 +1,29 @@
+diff --git a/arch/arm/boot/dts/suniv-f1c100s.dtsi b/arch/arm/boot/dts/suniv-f1c100s.dtsi
+index aff5f90..4c96a9e 100644
+--- a/arch/arm/boot/dts/suniv-f1c100s.dtsi
++++ b/arch/arm/boot/dts/suniv-f1c100s.dtsi
+@@ -6,6 +6,7 @@ 
+ 
+ #include <dt-bindings/clock/suniv-ccu-f1c100s.h>
+ #include <dt-bindings/reset/suniv-ccu-f1c100s.h>
++#include <dt-bindings/dma/sun4i-a10.h>
+ 
+ / {
+ 	#address-cells = <1>;
+@@ -65,6 +66,16 @@ 
+ 			};
+ 		};
+ 
++		dma: dma-controller@1c02000 {
++			compatible = "allwinner,suniv-f1c100s-dma";
++			reg = <0x01c02000 0x1000>;
++			interrupts = <18>;
++			clocks = <&ccu CLK_BUS_DMA>;
++			resets = <&ccu RST_BUS_DMA>;
++			#dma-cells = <2>;
++		};
++
++
+ 		ccu: clock@1c20000 {
+ 			compatible = "allwinner,suniv-f1c100s-ccu";
+ 			reg = <0x01c20000 0x400>;

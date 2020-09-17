@@ -1,0 +1,1 @@
+cmd_drivers/mfd/built-in.a := rm -f drivers/mfd/built-in.a; arm-linux-gnueabi-ar rcSTPD drivers/mfd/built-in.a drivers/mfd/sun6i-prcm.o drivers/mfd/mfd-core.o drivers/mfd/axp20x.o drivers/mfd/axp20x-i2c.o drivers/mfd/axp20x-rsb.o drivers/mfd/syscon.o

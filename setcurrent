@@ -1,0 +1,16 @@
+newCurrent=$1
+
+if [ ! -d buildroot ]; then
+	echo "Error: There is no buildroot directory"
+	exit 1
+fi
+
+if [ ! -d buildroot/${newCurrent} ]; then
+	echo "Error: ${newCurrent} is not a directory"
+	exit 1
+fi
+
+pushd buildroot
+unlink current
+ln -s ${newCurrent} current
+popd

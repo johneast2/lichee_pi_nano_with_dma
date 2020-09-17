@@ -1,0 +1,3 @@
+sunxi_spi_spl.c:94:13:spi0_pinmux_setup	16	static
+sunxi_spi_spl.c:251:13:spi0_read_data.constprop	40	static
+sunxi_spi_spl.c:299:12:spl_spi_load_image	32	static

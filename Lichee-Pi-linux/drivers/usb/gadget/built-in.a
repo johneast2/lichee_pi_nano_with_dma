@@ -1,0 +1,31 @@
+!<thin>
+//                                              200       `
+usbstring.o/
+config.o/
+epautoconf.o/
+composite.o/
+functions.o/
+configfs.o/
+u_f.o/
+udc/core.o/
+udc/trace.o/
+function/f_acm.o/
+function/u_serial.o/
+function/u_ether.o/
+function/f_ecm.o/
+legacy/cdc2.o/
+
+/0              0           0     0     644     1868      `
+/13             0           0     0     644     4776      `
+/23             0           0     0     644     3116      `
+/37             0           0     0     644     24112     `
+/50             0           0     0     644     4460      `
+/63             0           0     0     644     26608     `
+/75             0           0     0     644     1776      `
+/82             0           0     0     644     27304     `
+/94             0           0     0     644     840       `
+/107            0           0     0     644     9080      `
+/125            0           0     0     644     13304     `
+/146            0           0     0     644     16344     `
+/166            0           0     0     644     11496     `
+/184            0           0     0     644     8740      `

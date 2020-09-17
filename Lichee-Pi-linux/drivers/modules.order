@@ -1,0 +1,8 @@
+kernel/drivers/video/backlight/lcd.ko
+kernel/drivers/usb/mon/usbmon.ko
+kernel/drivers/usb/mon/usbmon.ko
+kernel/drivers/usb/mon/usbmon.ko
+kernel/drivers/usb/mon/usbmon.ko
+kernel/drivers/usb/mon/usbmon.ko
+kernel/drivers/input/touchscreen/goodix.ko
+kernel/drivers/staging/rtl8188eu/r8188eu.ko

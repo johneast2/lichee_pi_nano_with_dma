@@ -1,0 +1,49 @@
+!<thin>
+//                                              384       `
+sun4i_drv.o/
+sun4i_framebuffer.o/
+sun4i_crtc.o/
+sun4i_dotclock.o/
+sun4i_lvds.o/
+sun4i_tcon.o/
+sun4i_rgb.o/
+sun4i_tv.o/
+sun6i_drc.o/
+sun4i_backend.o/
+sun4i_layer.o/
+sun4i_frontend.o/
+sun4i_hdmi_ddc_clk.o/
+sun4i_hdmi_enc.o/
+sun4i_hdmi_i2c.o/
+sun4i_hdmi_tmds_clk.o/
+sun8i_mixer.o/
+sun8i_ui_layer.o/
+sun8i_vi_layer.o/
+sun8i_ui_scaler.o/
+sun8i_vi_scaler.o/
+sun8i_csc.o/
+sun8i_tcon_top.o/
+
+/0              0           0     0     644     13336     `
+/13             0           0     0     644     2084      `
+/34             0           0     0     644     4848      `
+/48             0           0     0     644     4592      `
+/66             0           0     0     644     4416      `
+/80             0           0     0     644     22344     `
+/94             0           0     0     644     5296      `
+/107            0           0     0     644     9964      `
+/119            0           0     0     644     6112      `
+/132           /0           0     0     644     17988     `
+/149            0           0     0     644     5072      `
+/164            0           0     0     644     15308     `
+/182            0           0     0     644     3116      `
+/204            0           0     0     644     12404     `
+/222            0           0     0     644     5260      `
+/240            0           0     0     644     3520      `
+/263            0           0     0     644     11296     `
+/278            0           0     0     644     6500      `
+/296            0           0     0     644     7496      `
+/314            0           0     0     644     3252      `
+/333            0           0     0     644     14824     `
+/352            0           0     0     644     2400      `
+/365            0           0     0     644     8640      `

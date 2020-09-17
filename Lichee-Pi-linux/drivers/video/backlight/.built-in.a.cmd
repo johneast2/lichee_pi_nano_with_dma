@@ -1,0 +1,1 @@
+cmd_drivers/video/backlight/built-in.a := rm -f drivers/video/backlight/built-in.a; arm-linux-gnueabi-ar rcSTPD drivers/video/backlight/built-in.a drivers/video/backlight/backlight.o drivers/video/backlight/generic_bl.o drivers/video/backlight/pwm_bl.o

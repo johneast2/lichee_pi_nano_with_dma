@@ -1,0 +1,56 @@
+!<thin>
+//                                              812       `
+realtek/rtl818x/rtl8187/dev.o/
+realtek/rtl818x/rtl8187/rtl8225.o/
+realtek/rtl818x/rtl8187/leds.o/
+realtek/rtl818x/rtl8187/rfkill.o/
+realtek/rtlwifi/base.o/
+realtek/rtlwifi/cam.o/
+realtek/rtlwifi/core.o/
+realtek/rtlwifi/debug.o/
+realtek/rtlwifi/efuse.o/
+realtek/rtlwifi/ps.o/
+realtek/rtlwifi/rc.o/
+realtek/rtlwifi/regd.o/
+realtek/rtlwifi/stats.o/
+realtek/rtlwifi/usb.o/
+realtek/rtlwifi/rtl8192c/main.o/
+realtek/rtlwifi/rtl8192c/dm_common.o/
+realtek/rtlwifi/rtl8192c/fw_common.o/
+realtek/rtlwifi/rtl8192c/phy_common.o/
+realtek/rtlwifi/rtl8192cu/dm.o/
+realtek/rtlwifi/rtl8192cu/hw.o/
+realtek/rtlwifi/rtl8192cu/led.o/
+realtek/rtlwifi/rtl8192cu/mac.o/
+realtek/rtlwifi/rtl8192cu/phy.o/
+realtek/rtlwifi/rtl8192cu/rf.o/
+realtek/rtlwifi/rtl8192cu/sw.o/
+realtek/rtlwifi/rtl8192cu/table.o/
+realtek/rtlwifi/rtl8192cu/trx.o/
+/0              0           0     0     644     25096     `
+/31             0           0     0     644     16960     `
+/66             0           0     0     644     4572      `
+/98             0           0     0     644     2340      `
+/132            0           0     0     644     37508     `
+/156            0           0     0     644     7736      `
+/179            0           0     0     644     27928     `
+/203            0           0     0     644     13828     `
+/228            0           0     0     644     18912     `
+/253            0           0     0     644     12984     `
+/275            0           0     0     644     4308      `
+/297            0           0     0     644     6092      `
+/321            0           0     0     644     3944      `
+/346            0           0     0     644     16120     `
+/369            0           0     0     644     1564      `
+/402            0           0     0     644     20928     `
+/440            0           0     0     644     12968     `
+/478            0           0     0     644     29932     `
+/517            0           0     0     644     2316      `
+/549            0           0     0     644     31860     `
+/581            0           0     0     644     2380      `
+/614            0           0     0     644     12068     `
+/647            0           0     0     644     9780      `
+/680            0           0     0     644     6784      `
+/712            0           0     0     644     11828     `
+/744            0           0     0     644     16872     `
+/779            0           0     0     644     7596      `

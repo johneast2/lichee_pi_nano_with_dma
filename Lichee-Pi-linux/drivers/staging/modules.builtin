@@ -1,0 +1,2 @@
+kernel/drivers/staging/fbtft/fbtft.ko
+kernel/drivers/staging/fbtft/flexfb.ko

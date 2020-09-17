@@ -1,0 +1,138 @@
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+index de511db..f8a65d2 100644
+--- a/drivers/dma/Kconfig
++++ b/drivers/dma/Kconfig
+@@ -163,8 +163,8 @@  config DMA_SA11X0
+ 
+ config DMA_SUN4I
+ 	tristate "Allwinner A10 DMA SoCs support"
+-	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I
+-	default (MACH_SUN4I || MACH_SUN5I || MACH_SUN7I)
++	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNIV
++	default (MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNIV)
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
+diff --git a/drivers/dma/sun4i-dma.c b/drivers/dma/sun4i-dma.c
+index d267ff9..c0452c9 100644
+--- a/drivers/dma/sun4i-dma.c
++++ b/drivers/dma/sun4i-dma.c
+@@ -36,7 +36,11 @@ 
+ #define SUN4I_DMA_CFG_SRC_ADDR_MODE(mode)	((mode) << 5)
+ #define SUN4I_DMA_CFG_SRC_DRQ_TYPE(type)	(type)
+ 
++#define SUNIV_DMA_CFG_DST_DATA_WIDTH(width)	((width) << 24)
++#define SUNIV_DMA_CFG_SRC_DATA_WIDTH(width)	((width) << 8)
++
+ #define SUN4I_MAX_BURST	8
++#define SUNIV_MAX_BURST	4
+ 
+ /** Normal DMA register values **/
+ 
+@@ -44,6 +48,9 @@ 
+ #define SUN4I_NDMA_DRQ_TYPE_SDRAM		0x16
+ #define SUN4I_NDMA_DRQ_TYPE_LIMIT		(0x1F + 1)
+ 
++#define SUNIV_NDMA_DRQ_TYPE_SDRAM		0x11
++#define SUNIV_NDMA_DRQ_TYPE_LIMIT		(0x17 + 1)
++
+ /** Normal DMA register layout **/
+ 
+ /* Dedicated DMA source/destination address mode values */
+@@ -57,6 +64,9 @@ 
+ #define SUN4I_NDMA_CFG_BYTE_COUNT_MODE_REMAIN	BIT(15)
+ #define SUN4I_NDMA_CFG_SRC_NON_SECURE		BIT(6)
+ 
++#define SUNIV_NDMA_CFG_CONT_MODE		BIT(29)
++#define SUNIV_NDMA_CFG_WAIT_STATE(n)		((n) << 26)
++
+ /** Dedicated DMA register values **/
+ 
+ /* Dedicated DMA source/destination address mode values */
+@@ -69,6 +79,9 @@ 
+ #define SUN4I_DDMA_DRQ_TYPE_SDRAM		0x1
+ #define SUN4I_DDMA_DRQ_TYPE_LIMIT		(0x1F + 1)
+ 
++#define SUNIV_DDMA_DRQ_TYPE_SDRAM		0x1
++#define SUNIV_DDMA_DRQ_TYPE_LIMIT		(0x9 + 1)
++
+ /** Dedicated DMA register layout **/
+ 
+ /* Dedicated DMA configuration register layout */
+@@ -122,6 +135,11 @@ 
+ #define SUN4I_DMA_NR_MAX_VCHANS						\
+ 	(SUN4I_NDMA_NR_MAX_VCHANS + SUN4I_DDMA_NR_MAX_VCHANS)
+ 
++#define SUNIV_NDMA_NR_MAX_CHANNELS	4
++#define SUNIV_DDMA_NR_MAX_CHANNELS	4
++#define SUNIV_NDMA_NR_MAX_VCHANS	(24 * 2 - 1)
++#define SUNIV_DDMA_NR_MAX_VCHANS	10
++
+ /* This set of SUN4I_DDMA timing parameters were found experimentally while
+  * working with the SPI driver and seem to make it behave correctly */
+ #define SUN4I_DDMA_MAGIC_SPI_PARAMETERS \
+@@ -236,6 +254,16 @@  static void set_src_data_width_a10(u32 *p_cfg, s8 data_width)
+ 	*p_cfg |= SUN4I_DMA_CFG_SRC_DATA_WIDTH(data_width);
+ }
+ 
++static void set_dst_data_width_f1c100s(u32 *p_cfg, s8 data_width)
++{
++	*p_cfg |= SUNIV_DMA_CFG_DST_DATA_WIDTH(data_width);
++}
++
++static void set_src_data_width_f1c100s(u32 *p_cfg, s8 data_width)
++{
++	*p_cfg |= SUNIV_DMA_CFG_SRC_DATA_WIDTH(data_width);
++}
++
+ static int convert_burst_a10(u32 maxburst)
+ {
+ 	if (maxburst > 8)
+@@ -245,6 +273,15 @@  static int convert_burst_a10(u32 maxburst)
+ 	return (maxburst >> 2);
+ }
+ 
++static int convert_burst_f1c100s(u32 maxburst)
++{
++	if (maxburst > 4)
++		return -EINVAL;
++
++	/* 1 -> 0, 4 -> 1 */
++	return (maxburst >> 2);
++}
++
+ static int convert_buswidth(enum dma_slave_buswidth addr_width)
+ {
+ 	if (addr_width > DMA_SLAVE_BUSWIDTH_4_BYTES)
+@@ -1364,8 +1401,31 @@  static struct sun4i_dma_config sun4i_a10_dma_cfg = {
+ 	.has_reset		= false,
+ };
+ 
++static struct sun4i_dma_config suniv_f1c100s_dma_cfg = {
++	.ndma_nr_max_channels	= SUNIV_NDMA_NR_MAX_CHANNELS,
++	.ndma_nr_max_vchans	= SUNIV_NDMA_NR_MAX_VCHANS,
++
++	.ddma_nr_max_channels	= SUNIV_DDMA_NR_MAX_CHANNELS,
++	.ddma_nr_max_vchans	= SUNIV_DDMA_NR_MAX_VCHANS,
++
++	.dma_nr_max_channels	= SUNIV_NDMA_NR_MAX_CHANNELS +
++		SUNIV_DDMA_NR_MAX_CHANNELS,
++
++	.set_dst_data_width	= set_dst_data_width_f1c100s,
++	.set_src_data_width	= set_src_data_width_f1c100s,
++	.convert_burst		= convert_burst_f1c100s,
++
++	.ndma_drq_sdram		= SUNIV_NDMA_DRQ_TYPE_SDRAM,
++	.ddma_drq_sdram		= SUNIV_DDMA_DRQ_TYPE_SDRAM,
++
++	.max_burst		= SUNIV_MAX_BURST,
++	.has_reset		= true,
++};
++
+ static const struct of_device_id sun4i_dma_match[] = {
+ 	{ .compatible = "allwinner,sun4i-a10-dma", .data = &sun4i_a10_dma_cfg },
++	{ .compatible = "allwinner,suniv-f1c100s-dma",
++		.data = &suniv_f1c100s_dma_cfg },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, sun4i_dma_match);

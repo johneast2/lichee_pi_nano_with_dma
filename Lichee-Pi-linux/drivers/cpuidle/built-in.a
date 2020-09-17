@@ -1,0 +1,17 @@
+!<thin>
+//                                              94        `
+cpuidle.o/
+driver.o/
+governor.o/
+sysfs.o/
+governors/menu.o/
+dt_idle_states.o/
+cpuidle-arm.o/
+
+/0              0           0     0     644     13184     `
+/11             0           0     0     644     3892      `
+/21             0           0     0     644     3024      `
+/33             0           0     0     644     11716     `
+/42             0           0     0     644     5332      `
+/60             0           0     0     644     3164      `
+/78             0           0     0     644     4192      `

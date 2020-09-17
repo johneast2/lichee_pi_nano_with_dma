@@ -1,0 +1,16 @@
+kernel/drivers/net/mii.ko
+kernel/drivers/net/phy/libphy.ko
+kernel/drivers/net/phy/fixed_phy.ko
+kernel/drivers/net/usb/asix.ko
+kernel/drivers/net/usb/ax88179_178a.ko
+kernel/drivers/net/usb/cdc_ether.ko
+kernel/drivers/net/usb/net1080.ko
+kernel/drivers/net/usb/cdc_subset.ko
+kernel/drivers/net/usb/zaurus.ko
+kernel/drivers/net/usb/usbnet.ko
+kernel/drivers/net/usb/cdc_ncm.ko
+kernel/drivers/net/wireless/realtek/rtl818x/rtl8187/rtl8187.ko
+kernel/drivers/net/wireless/realtek/rtlwifi/rtlwifi.ko
+kernel/drivers/net/wireless/realtek/rtlwifi/rtl_usb.ko
+kernel/drivers/net/wireless/realtek/rtlwifi/rtl8192c/rtl8192c-common.ko
+kernel/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rtl8192cu.ko
