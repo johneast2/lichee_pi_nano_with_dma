@@ -153,9 +153,67 @@ struct dma_channel {
 
 /*
 struct cppi41_dma_controller {
-	struct dma_controller controller;
+	struct dma_controller controller; //defined in musb_dma.h
+	//---
+		/**
+		 * struct dma_controller - A DMA Controller.
+		 * @musb: the usb controller
+		 * @start: call this to start a DMA controller;
+		 *	return 0 on success, else negative errno
+		 * @stop: call this to stop a DMA controller
+		 *	return 0 on success, else negative errno
+		 * @channel_alloc: call this to allocate a DMA channel
+		 * @channel_release: call this to release a DMA channel
+		 * @channel_abort: call this to abort a pending DMA transaction,
+		 *	returning it to FREE (but allocated) state
+		 * @dma_callback: invoked on DMA completion, useful to run platform
+		 *	code such IRQ acknowledgment.
+		 *
+		 * Controllers manage dma channels.
+		 
+		struct dma_controller {
+			struct musb *musb;
+			struct dma_channel	*(*channel_alloc)(struct dma_controller *,
+							struct musb_hw_ep *, u8 is_tx);
+			void			(*channel_release)(struct dma_channel *);
+			int			(*channel_program)(struct dma_channel *channel,
+									u16 maxpacket, u8 mode,
+									dma_addr_t dma_addr,
+									u32 length);
+			int			(*channel_abort)(struct dma_channel *);
+			int			(*is_compatible)(struct dma_channel *channel,
+									u16 maxpacket,
+									void *buf, u32 length);
+			void			(*dma_callback)(struct dma_controller *);
+		};
+
+	--//
+
 	struct cppi41_dma_channel *rx_channel;
-	struct cppi41_dma_channel *tx_channel;
+	struct cppi41_dma_channel *tx_channel;  defined in cppi_dma.h
+	// --
+
+		struct cppi41_dma_channel {
+			struct dma_channel channel;
+			struct cppi41_dma_controller *controller;
+			struct musb_hw_ep *hw_ep;
+			struct dma_chan *dc;
+			dma_cookie_t cookie;
+			u8 port_num;
+			u8 is_tx;
+			u8 is_allocated;
+			u8 usb_toggle;
+
+			dma_addr_t buf_addr;
+			u32 total_len;
+			u32 prog_len;
+			u32 transferred;
+			u32 packet_sz;
+			struct list_head tx_check;
+			int tx_zlp;
+		};
+	--//
+
 	struct hrtimer early_tx;
 	struct list_head early_tx_list;
 	u32 rx_mode;
@@ -237,6 +295,152 @@ struct musb_hw_ep {
  
 struct dma_chan {
 	struct dma_device *device;
+	// --
+		/**
+		 * struct dma_device - info on the entity supplying DMA services
+		 * @chancnt: how many DMA channels are supported
+		 * @privatecnt: how many DMA channels are requested by dma_request_channel
+		 * @channels: the list of struct dma_chan
+		 * @global_node: list_head for global dma_device_list
+		 * @filter: information for device/slave to filter function/param mapping
+		 * @cap_mask: one or more dma_capability flags
+		 * @max_xor: maximum number of xor sources, 0 if no capability
+		 * @max_pq: maximum number of PQ sources and PQ-continue capability
+		 * @copy_align: alignment shift for memcpy operations
+		 * @xor_align: alignment shift for xor operations
+		 * @pq_align: alignment shift for pq operations
+		 * @fill_align: alignment shift for memset operations
+		 * @dev_id: unique device ID
+		 * @dev: struct device reference for dma mapping api
+		 * @src_addr_widths: bit mask of src addr widths the device supports
+		 *	Width is specified in bytes, e.g. for a device supporting
+		 *	a width of 4 the mask should have BIT(4) set.
+		 * @dst_addr_widths: bit mask of dst addr widths the device supports
+		 * @directions: bit mask of slave directions the device supports.
+		 *	Since the enum dma_transfer_direction is not defined as bit flag for
+		 *	each type, the dma controller should set BIT(<TYPE>) and same
+		 *	should be checked by controller as well
+		 * @max_burst: max burst capability per-transfer
+		 * @residue_granularity: granularity of the transfer residue reported
+		 *	by tx_status
+		 * @device_alloc_chan_resources: allocate resources and return the
+		 *	number of allocated descriptors
+		 * @device_free_chan_resources: release DMA channel's resources
+		 * @device_prep_dma_memcpy: prepares a memcpy operation
+		 * @device_prep_dma_xor: prepares a xor operation
+		 * @device_prep_dma_xor_val: prepares a xor validation operation
+		 * @device_prep_dma_pq: prepares a pq operation
+		 * @device_prep_dma_pq_val: prepares a pqzero_sum operation
+		 * @device_prep_dma_memset: prepares a memset operation
+		 * @device_prep_dma_memset_sg: prepares a memset operation over a scatter list
+		 * @device_prep_dma_interrupt: prepares an end of chain interrupt operation
+		 * @device_prep_slave_sg: prepares a slave dma operation
+		 * @device_prep_dma_cyclic: prepare a cyclic dma operation suitable for audio.
+		 *	The function takes a buffer of size buf_len. The callback function will
+		 *	be called after period_len bytes have been transferred.
+		 * @device_prep_interleaved_dma: Transfer expression in a generic way.
+		 * @device_prep_dma_imm_data: DMA's 8 byte immediate data to the dst address
+		 * @device_config: Pushes a new configuration to a channel, return 0 or an error
+		 *	code
+		 * @device_pause: Pauses any transfer happening on a channel. Returns
+		 *	0 or an error code
+		 * @device_resume: Resumes any transfer on a channel previously
+		 *	paused. Returns 0 or an error code
+		 * @device_terminate_all: Aborts all transfers on a channel. Returns 0
+		 *	or an error code
+		 * @device_synchronize: Synchronizes the termination of a transfers to the
+		 *  current context.
+		 * @device_tx_status: poll for transaction completion, the optional
+		 *	txstate parameter can be supplied with a pointer to get a
+		 *	struct with auxiliary transfer status information, otherwise the call
+		 *	will just return a simple status code
+		 * @device_issue_pending: push pending transactions to hardware
+		 * @descriptor_reuse: a submitted transfer can be resubmitted after completion
+		 
+		struct dma_device {
+
+			unsigned int chancnt;
+			unsigned int privatecnt;
+			struct list_head channels;
+			struct list_head global_node;
+			struct dma_filter filter;
+			dma_cap_mask_t  cap_mask;
+			unsigned short max_xor;
+			unsigned short max_pq;
+			enum dmaengine_alignment copy_align;
+			enum dmaengine_alignment xor_align;
+			enum dmaengine_alignment pq_align;
+			enum dmaengine_alignment fill_align;
+			#define DMA_HAS_PQ_CONTINUE (1 << 15)
+
+			int dev_id;
+			struct device *dev;
+
+			u32 src_addr_widths;
+			u32 dst_addr_widths;
+			u32 directions;
+			u32 max_burst;
+			bool descriptor_reuse;
+			enum dma_residue_granularity residue_granularity;
+
+			int (*device_alloc_chan_resources)(struct dma_chan *chan);
+			void (*device_free_chan_resources)(struct dma_chan *chan);
+
+			struct dma_async_tx_descriptor *(*device_prep_dma_memcpy)(
+				struct dma_chan *chan, dma_addr_t dst, dma_addr_t src,
+				size_t len, unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_xor)(
+				struct dma_chan *chan, dma_addr_t dst, dma_addr_t *src,
+				unsigned int src_cnt, size_t len, unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_xor_val)(
+				struct dma_chan *chan, dma_addr_t *src,	unsigned int src_cnt,
+				size_t len, enum sum_check_flags *result, unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_pq)(
+				struct dma_chan *chan, dma_addr_t *dst, dma_addr_t *src,
+				unsigned int src_cnt, const unsigned char *scf,
+				size_t len, unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_pq_val)(
+				struct dma_chan *chan, dma_addr_t *pq, dma_addr_t *src,
+				unsigned int src_cnt, const unsigned char *scf, size_t len,
+				enum sum_check_flags *pqres, unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_memset)(
+				struct dma_chan *chan, dma_addr_t dest, int value, size_t len,
+				unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_memset_sg)(
+				struct dma_chan *chan, struct scatterlist *sg,
+				unsigned int nents, int value, unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_interrupt)(
+				struct dma_chan *chan, unsigned long flags);
+
+			struct dma_async_tx_descriptor *(*device_prep_slave_sg)(
+				struct dma_chan *chan, struct scatterlist *sgl,
+				unsigned int sg_len, enum dma_transfer_direction direction,
+				unsigned long flags, void *context);
+			struct dma_async_tx_descriptor *(*device_prep_dma_cyclic)(
+				struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
+				size_t period_len, enum dma_transfer_direction direction,
+				unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_interleaved_dma)(
+				struct dma_chan *chan, struct dma_interleaved_template *xt,
+				unsigned long flags);
+			struct dma_async_tx_descriptor *(*device_prep_dma_imm_data)(
+				struct dma_chan *chan, dma_addr_t dst, u64 data,
+				unsigned long flags);
+
+			int (*device_config)(struct dma_chan *chan,
+					     struct dma_slave_config *config);
+			int (*device_pause)(struct dma_chan *chan);
+			int (*device_resume)(struct dma_chan *chan);
+			int (*device_terminate_all)(struct dma_chan *chan);
+			void (*device_synchronize)(struct dma_chan *chan);
+
+			enum dma_status (*device_tx_status)(struct dma_chan *chan,
+							    dma_cookie_t cookie,
+							    struct dma_tx_state *txstate);
+			void (*device_issue_pending)(struct dma_chan *chan);
+		};
+        -- //
+
 	dma_cookie_t cookie;
 	dma_cookie_t completed_cookie;
 
