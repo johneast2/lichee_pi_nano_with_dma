@@ -2260,7 +2260,9 @@ musb_init_controller(struct device *dev, int nIrq, void __iomem *ctrl)
 	if (musb->ops->writew)
 		musb_writew = musb->ops->writew;
 
+printk("musb_Core just before DMA init being calledSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS\n");
 #ifndef CONFIG_MUSB_PIO_ONLY
+        printk("musb_Core DMA init being called##############################\n");
 	if (!musb->ops->dma_init || !musb->ops->dma_exit) {
 		dev_err(dev, "DMA controller not set\n");
 		status = -ENODEV;
@@ -2305,14 +2307,19 @@ musb_init_controller(struct device *dev, int nIrq, void __iomem *ctrl)
 	if (status < 0)
 		goto err_usb_phy_init;
 
-	if (use_dma && dev->dma_mask) {
+	printk("musb_core JUST BEFORE use_dma and dma_maskNNNNNNNNNNNNNNNNNNNNNNNN\n");
+	//if (use_dma && dev->dma_mask) { // where is this set?
+		printk("musb_core using dma!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1\n");
 		musb->dma_controller =
 			musb_dma_controller_create(musb, musb->mregs);
 		if (IS_ERR(musb->dma_controller)) {
 			status = PTR_ERR(musb->dma_controller);
 			goto fail2_5;
 		}
-	}
+	//}
+	//else {
+	//	printk("Not using dma!?!?!?!?!?!?!?!?\n");
+	//}
 
 	/* be sure interrupts are disabled before connecting ISR */
 	musb_platform_disable(musb);
@@ -2424,6 +2431,7 @@ err_usb_phy_init:
 	pm_runtime_disable(musb->controller);
 
 fail2:
+        printk("musb_core FAIL2 called@@@@@@@@@@@@@@@@@@@@2\n");
 	if (musb->irq_wake)
 		device_init_wakeup(dev, 0);
 	musb_platform_exit(musb);

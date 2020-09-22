@@ -24,6 +24,7 @@
 #include <linux/usb/usb_phy_generic.h>
 #include <linux/workqueue.h>
 #include "musb_core.h"
+#include "sunxi.h"
 
 /*
  * Register offsets, note sunxi musb has a different layout then most
@@ -314,12 +315,242 @@ static void sunxi_musb_disable(struct musb *musb)
 static struct dma_controller *
 sunxi_musb_dma_controller_create(struct musb *musb, void __iomem *base)
 {
-	return NULL;
+
+	struct dma_controller *controller;
+
+	if (!musb->controller->parent->of_node) {
+		dev_err(musb->controller, "Need DT for the DMA engine.\n");
+		printk ("sunxi_musb_dma_controller_create Need DT for the DMA engine EEEEEEEEEEEEEEEEEEEEEEE\n");
+		// this doesn't print out so its good!?!?!?
+		return NULL;
+	}
+	printk ("sunxi_musb_dma_controller_create AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+
+
+
+	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
+	if (!controller)
+		printk("Failed to allocate memory for sunxi dma controller\n");
+
+	controller->channel_alloc = sunxi_dma_channel_allocate;
+	controller->channel_release = sunxi_dma_channel_release;
+	controller->channel_program = sunxi_dma_channel_program;
+	controller->channel_abort = sunxi_dma_channel_abort;
+	controller->is_compatible = sunxi_is_compatible;
+	controller->musb = musb;
+
+
+	return controller;
 }
 
 static void sunxi_musb_dma_controller_destroy(struct dma_controller *c)
 {
 }
+
+
+static struct dma_channel *sunxi_dma_channel_allocate(struct dma_controller *c,
+				struct musb_hw_ep *hw_ep, u8 is_tx)
+{
+	printk("sunxi_dma_channel_allocate called 00000000000000000000\n");
+	return NULL;
+/*
+	struct cppi41_dma_controller *controller = container_of(c,
+			struct cppi41_dma_controller, controller);
+	struct cppi41_dma_channel *cppi41_channel = NULL;
+	u8 ch_num = hw_ep->epnum - 1;
+
+	if (ch_num >= controller->num_channels)
+		return NULL;
+
+	if (is_tx)
+		cppi41_channel = &controller->tx_channel[ch_num];
+	else
+		cppi41_channel = &controller->rx_channel[ch_num];
+
+	if (!cppi41_channel->dc)
+		return NULL;
+
+	if (cppi41_channel->is_allocated)
+		return NULL;
+
+	cppi41_channel->hw_ep = hw_ep;
+	cppi41_channel->is_allocated = 1;
+
+	trace_musb_cppi41_alloc(cppi41_channel);
+	return &cppi41_channel->channel;
+*/
+}
+
+static void sunxi_dma_channel_release(struct dma_channel *channel)
+{
+	printk("sunxi_dma_channel_release called 11111111111111111111111111\n");
+/*
+	struct cppi41_dma_channel *cppi41_channel = channel->private_data;
+
+	trace_musb_cppi41_free(cppi41_channel);
+	if (cppi41_channel->is_allocated) {
+		cppi41_channel->is_allocated = 0;
+		channel->status = MUSB_DMA_STATUS_FREE;
+		channel->actual_len = 0;
+	}
+*/
+}
+
+static int sunxi_dma_channel_program(struct dma_channel *channel,
+				u16 packet_sz, u8 mode,
+				dma_addr_t dma_addr, u32 len)
+{
+	printk("sunxi_dma_channel_program called 2222222222222222222222222222\n");
+	return 0;
+/*
+	int ret;
+	struct cppi41_dma_channel *cppi41_channel = channel->private_data;
+	int hb_mult = 0;
+
+	BUG_ON(channel->status == MUSB_DMA_STATUS_UNKNOWN ||
+		channel->status == MUSB_DMA_STATUS_BUSY);
+
+	if (is_host_active(cppi41_channel->controller->controller.musb)) {
+		if (cppi41_channel->is_tx)
+			hb_mult = cppi41_channel->hw_ep->out_qh->hb_mult;
+		else
+			hb_mult = cppi41_channel->hw_ep->in_qh->hb_mult;
+	}
+
+	channel->status = MUSB_DMA_STATUS_BUSY;
+	channel->actual_len = 0;
+
+	if (hb_mult)
+		packet_sz = hb_mult * (packet_sz & 0x7FF);
+
+	ret = cppi41_configure_channel(channel, packet_sz, mode, dma_addr, len);
+	if (!ret)
+		channel->status = MUSB_DMA_STATUS_FREE;
+
+	return ret;
+*/
+}
+
+
+static int sunxi_dma_channel_abort(struct dma_channel *channel)
+{
+
+	printk("sunxi_dma_channel_abort called 33333333333333333333333333\n");
+	return 0;
+/*
+	struct cppi41_dma_channel *cppi41_channel = channel->private_data;
+	struct cppi41_dma_controller *controller = cppi41_channel->controller;
+	struct musb *musb = controller->controller.musb;
+	void __iomem *epio = cppi41_channel->hw_ep->regs;
+	int tdbit;
+	int ret;
+	unsigned is_tx;
+	u16 csr;
+
+	is_tx = cppi41_channel->is_tx;
+	trace_musb_cppi41_abort(cppi41_channel);
+
+	if (cppi41_channel->channel.status == MUSB_DMA_STATUS_FREE)
+		return 0;
+
+	list_del_init(&cppi41_channel->tx_check);
+	if (is_tx) {
+		csr = musb_readw(epio, MUSB_TXCSR);
+		csr &= ~MUSB_TXCSR_DMAENAB;
+		musb_writew(epio, MUSB_TXCSR, csr);
+	} else {
+		cppi41_set_autoreq_mode(cppi41_channel, EP_MODE_AUTOREQ_NONE);
+
+		// delay to drain to cppi dma pipeline for isoch
+		udelay(250);
+
+		csr = musb_readw(epio, MUSB_RXCSR);
+		csr &= ~(MUSB_RXCSR_H_REQPKT | MUSB_RXCSR_DMAENAB);
+		musb_writew(epio, MUSB_RXCSR, csr);
+
+		// wait to drain cppi dma pipe line
+		udelay(50);
+
+		csr = musb_readw(epio, MUSB_RXCSR);
+		if (csr & MUSB_RXCSR_RXPKTRDY) {
+			csr |= MUSB_RXCSR_FLUSHFIFO;
+			musb_writew(epio, MUSB_RXCSR, csr);
+			musb_writew(epio, MUSB_RXCSR, csr);
+		}
+	}
+
+	// DA8xx Advisory 2.3.27: wait 250 ms before to start the teardown
+	if (musb->ops->quirks & MUSB_DA8XX)
+		mdelay(250);
+
+	tdbit = 1 << cppi41_channel->port_num;
+	if (is_tx)
+		tdbit <<= 16;
+
+	do {
+		if (is_tx)
+			musb_writel(musb->ctrl_base, controller->tdown_reg,
+				    tdbit);
+		ret = dmaengine_terminate_all(cppi41_channel->dc);
+	} while (ret == -EAGAIN);
+
+	if (is_tx) {
+		musb_writel(musb->ctrl_base, controller->tdown_reg, tdbit);
+
+		csr = musb_readw(epio, MUSB_TXCSR);
+		if (csr & MUSB_TXCSR_TXPKTRDY) {
+			csr |= MUSB_TXCSR_FLUSHFIFO;
+			musb_writew(epio, MUSB_TXCSR, csr);
+		}
+	}
+
+	cppi41_channel->channel.status = MUSB_DMA_STATUS_FREE;
+	return 0;
+*/
+}
+
+static int sunxi_is_compatible(struct dma_channel *channel, u16 maxpacket,
+		void *buf, u32 length)
+{
+	printk("sunxi_is_compatible callled 5555555555555555 \n");
+	return 0;
+/*
+	struct cppi41_dma_channel *cppi41_channel = channel->private_data;
+	struct cppi41_dma_controller *controller = cppi41_channel->controller;
+	struct musb *musb = controller->controller.musb;
+
+	if (is_host_active(musb)) {
+		WARN_ON(1);
+		return 1;
+	}
+	if (cppi41_channel->hw_ep->ep_in.type != USB_ENDPOINT_XFER_BULK)
+		return 0;
+	if (cppi41_channel->is_tx)
+		return 1;
+	/* AM335x Advisory 1.0.13. No workaround for device RX mode 
+	return 0;
+*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 static int sunxi_musb_set_mode(struct musb *musb, u8 mode)
 {
