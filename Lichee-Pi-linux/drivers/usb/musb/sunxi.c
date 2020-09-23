@@ -352,6 +352,16 @@ static struct dma_channel *sunxi_dma_channel_allocate(struct dma_controller *c,
 				struct musb_hw_ep *hw_ep, u8 is_tx)
 {
 	printk("sunxi_dma_channel_allocate called 00000000000000000000\n");
+
+	u8 ch_num = hw_ep->epnum - 1;
+
+	printk("sunxi_dma_channel_allocate ch_num = %u\n", ch_num);
+
+	if (is_tx)
+		printk("sunxi_dma_channel_allocate is a TX channel\n");
+	else
+		printk("sunxi_dma_channel_allocate is a RX channel\n");
+
 	return NULL;
 /*
 	struct cppi41_dma_controller *controller = container_of(c,
