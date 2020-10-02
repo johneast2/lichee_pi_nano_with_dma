@@ -317,6 +317,9 @@ sunxi_musb_dma_controller_create(struct musb *musb, void __iomem *base)
 {
 
 	struct dma_controller *controller;
+	int count;
+	int i;
+	int ret;
 
 	if (!musb->controller->parent->of_node) {
 		dev_err(musb->controller, "Need DT for the DMA engine.\n");
@@ -339,6 +342,78 @@ sunxi_musb_dma_controller_create(struct musb *musb, void __iomem *base)
 	controller->is_compatible = sunxi_is_compatible;
 	controller->musb = musb;
 
+	struct device *dev = musb->controller;
+
+	struct device_node *np = dev->parent->of_node;
+
+	count = of_property_count_strings(np, "dma-names");
+	printk("SSSSSSSSSSSSSSSSSS of_property_count_strings of dma-names = %d\n", count); 
+	if (count < 0) {
+		printk("Count is less than 0\n");
+	}	
+	if (count > 0) {
+		//return count;
+
+		for (i = 0; i < count; i++) {
+			struct dma_chan *dc;
+			struct dma_channel *musb_dma;
+			const char *str;
+			unsigned is_tx;
+			unsigned int port;
+
+			ret = of_property_read_string_index(np, "dma-names", i, &str);
+			printk("hhhhhhhhhhhhhhhhhhhhhhhhh of_property_read_string_index i = %d, ret = ", i);
+			if (ret) {
+				printk(" ret was not 0??????????????????????????\n");
+			}
+				
+			if (strstarts(str, "tx"))
+				is_tx = 1;
+			else if (strstarts(str, "rx"))
+				is_tx = 0;
+			else {
+				dev_err(dev, "Wrong dmatype %s\n", str);
+				printk("NNNNNNNNNNNNNNNNNNNNNNNNNNN Wrong dmatype %s\n", str);
+				//goto err;
+			}
+/*
+			ret = kstrtouint(str + 2, 0, &port);
+			if (ret)
+				goto err;
+
+			ret = -EINVAL;
+			if (port > controller->num_channels || !port)
+				goto err;
+			if (is_tx)
+				cppi41_channel = &controller->tx_channel[port - 1];
+			else
+				cppi41_channel = &controller->rx_channel[port - 1];
+
+			cppi41_channel->controller = controller;
+			cppi41_channel->port_num = port;
+			cppi41_channel->is_tx = is_tx;
+			INIT_LIST_HEAD(&cppi41_channel->tx_check);
+
+			musb_dma = &cppi41_channel->channel;
+			musb_dma->private_data = cppi41_channel;
+			musb_dma->status = MUSB_DMA_STATUS_FREE;
+			musb_dma->max_len = SZ_4M;
+
+			dc = dma_request_chan(dev->parent, str);
+			if (IS_ERR(dc)) {
+				ret = PTR_ERR(dc);
+				if (ret != -EPROBE_DEFER)
+					dev_err(dev, "Failed to request %s: %d.\n",
+						str, ret);
+				goto err;
+			}
+
+			cppi41_channel->dc = dc;
+			*/
+		}
+	}
+	//return 0;
+
 
 	return controller;
 }
@@ -351,16 +426,31 @@ static void sunxi_musb_dma_controller_destroy(struct dma_controller *c)
 static struct dma_channel *sunxi_dma_channel_allocate(struct dma_controller *c,
 				struct musb_hw_ep *hw_ep, u8 is_tx)
 {
-	printk("sunxi_dma_channel_allocate called 00000000000000000000\n");
+
+// check in cppi_dma.c, :
+/*
+/*
+ * Allocate a CPPI Channel for DMA.  With CPPI, channels are bound to
+ * each transfer direction of a non-control endpoint, so allocating
+ * (and deallocating) is mostly a way to notice bad housekeeping on
+ * the software side.  We assume the irqs are always active.
+
+static struct dma_channel *
+cppi_channel_allocate(struct dma_controller *c,
+		struct musb_hw_ep *ep, u8 transmit)
+{
+*/
+	//printk("sunxi_dma_channel_allocate called 00000000000000000000\n");
 
 	u8 ch_num = hw_ep->epnum - 1;
 
-	printk("sunxi_dma_channel_allocate ch_num = %u\n", ch_num);
-
+	//printk("sunxi_dma_channel_allocate ch_num = %u\n", ch_num);
+/*
 	if (is_tx)
 		printk("sunxi_dma_channel_allocate is a TX channel\n");
 	else
 		printk("sunxi_dma_channel_allocate is a RX channel\n");
+*/
 
 	return NULL;
 /*
