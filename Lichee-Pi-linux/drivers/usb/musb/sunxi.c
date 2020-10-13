@@ -8,6 +8,7 @@
  * Allwinner Technology Co., Ltd. <www.allwinnertech.com>
  */
 
+#include <linux/of_dma.h>
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/extcon.h>
@@ -315,11 +316,18 @@ static void sunxi_musb_disable(struct musb *musb)
 static struct dma_controller *
 sunxi_musb_dma_controller_create(struct musb *musb, void __iomem *base)
 {
-
+	// need to hold onto the __iomem passed in
 	struct dma_controller *controller;
-	int count;
-	int i;
+	struct platform_device *pdev = to_platform_device(musb->controller);
+	struct device *dev = musb->controller;
+	struct musb_hdrc_platform_data *plat = dev_get_platdata(musb->controller);
+	struct resource	*iomem;
 	int ret;
+	dma_cap_mask_t mask;
+
+	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
+	if (!controller)
+		return -EINVAL;
 
 	if (!musb->controller->parent->of_node) {
 		dev_err(musb->controller, "Need DT for the DMA engine.\n");
@@ -329,91 +337,144 @@ sunxi_musb_dma_controller_create(struct musb *musb, void __iomem *base)
 	}
 	printk ("sunxi_musb_dma_controller_create AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
 
+	// is this needed?
+	//controller->phy_base = (dma_addr_t) iomem->start;
+
+	if (!plat) {
+		dev_err(musb->controller, "No platform dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+		return -EINVAL;
+	}
+/*
+	printk("plat = ");
+	printk(plat);
+	printk("\n");
+*/
+	/*data = plat->board_data;
+	printk("data = ");
+	printk(data);
+	printk("\n");
+	param_array = data ? data->dma_rx_param_array : NULL;
+	printk("param_array = ");
+	printk(param_array);
+	printk("\n");
+	*/
+
+	dma_cap_zero(mask);
+	dma_cap_set(DMA_SLAVE, mask);
+
+	if (pdev->dev.of_node == NULL) {
+		printk("of_node is null...\n");
+	}
+
+	//printk("of_node name = ");
+	//printk(pdev->dev.of_node->name);
+	//printk("of_node full_name = ");
+	//printk(pdev->dev.of_node->full_name);
 
 
-	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
-	if (!controller)
-		printk("Failed to allocate memory for sunxi dma controller\n");
+	struct dma_chan * rx_ep_1_dma_channel;
+	rx_ep_1_dma_channel = dma_request_chan(dev->parent, "rx_ep_1");
+//		of_dma_request_slave_channel(dev, "rx_ep_1");
+/*
+		dma_chan = dma_request_channel(mask,
+							    data ?
+							    data->dma_filter :
+							    NULL,
+							    param_array ?
+							    param_array[ch_num] :
+							    NULL);
+*/
+	if (!rx_ep_1_dma_channel) {
+		printk("failed to get dma channel for rx_ep_1!!!!!!!!!!!\n");
+	}
+	else {
+		printk("got a dma channel rx_ep_1 WHAT!!!!!!!!!!!!!!!!!!!???????????????\n");
+	}
+
+
+	struct dma_chan * tx_ep_1_dma_channel = dma_request_chan(dev->parent, "tx_ep_1");
+
+	if (!tx_ep_1_dma_channel) {
+		printk("failed to get dma channel for tx_ep_1!!!!!!!!!!!\n");
+	}
+	else {
+		printk("got a dma channel tx_ep_1 WHAT!!!!!!!!!!!!!!!!!!!???????????????\n");
+	}
+//
+//
+
+// I think we need to setup a dma syste like so:
+
+// from ste-dbx5x0.dtsi ->
+/*
+		usb_per5@a03e0000 {
+			compatible = "stericsson,db8500-musb";
+			reg = <0xa03e0000 0x10000>;
+			interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "mc";
+
+			dr_mode = "otg";
+
+			dmas = <&dma 38 0 0x2>, /* Logical - DevToMem *
+			       <&dma 38 0 0x0>, /* Logical - MemToDev *
+			       <&dma 37 0 0x2>, /* Logical - DevToMem *
+			       <&dma 37 0 0x0>, /* Logical - MemToDev *
+			       <&dma 36 0 0x2>, /* Logical - DevToMem *
+			       <&dma 36 0 0x0>, /* Logical - MemToDev *
+			       <&dma 19 0 0x2>, /* Logical - DevToMem *
+			       <&dma 19 0 0x0>, /* Logical - MemToDev *
+			       <&dma 18 0 0x2>, /* Logical - DevToMem *
+			       <&dma 18 0 0x0>, /* Logical - MemToDev *
+			       <&dma 17 0 0x2>, /* Logical - DevToMem *
+			       <&dma 17 0 0x0>, /* Logical - MemToDev *
+			       <&dma 16 0 0x2>, /* Logical - DevToMem *
+			       <&dma 16 0 0x0>, /* Logical - MemToDev *
+			       <&dma 39 0 0x2>, /* Logical - DevToMem *
+			       <&dma 39 0 0x0>; /* Logical - MemToDev *
+
+			dma-names = "iep_1_9",  "oep_1_9",
+				    "iep_2_10", "oep_2_10",
+				    "iep_3_11", "oep_3_11",
+				    "iep_4_12", "oep_4_12",
+				    "iep_5_13", "oep_5_13",
+				    "iep_6_14", "oep_6_14",
+				    "iep_7_15", "oep_7_15",
+				    "iep_8",    "oep_8";
+
+			clocks = <&prcc_pclk 5 0>;
+		};
+*/
+
+// we'll need to give it channels and names, then I think dma_request_slave_channel will work
+//
+//
+//		}
+//	}
+
 
 	controller->channel_alloc = sunxi_dma_channel_allocate;
+/*
+notes on allocate:
+musb_start_urb in musb_host.c
+calls into musb_ep_program in musb_host.c
+calls 			dma_channel = dma_controller->channel_alloc(
+					dma_controller, hw_ep, is_out);
+
+then at the end, has a hard check:
+		else if (is_cppi_enabled(musb) || tusb_dma_omap(musb))
+			musb_h_tx_dma_start(hw_ep);
+
+there's also a non dma version?
+			musb_h_tx_start(hw_ep);
+
+qh->hw_ep; --> the qh that comes in must handle the transfer stuff
+
+*/
 	controller->channel_release = sunxi_dma_channel_release;
 	controller->channel_program = sunxi_dma_channel_program;
 	controller->channel_abort = sunxi_dma_channel_abort;
 	controller->is_compatible = sunxi_is_compatible;
 	controller->musb = musb;
-
-	struct device *dev = musb->controller;
-
-	struct device_node *np = dev->parent->of_node;
-
-	count = of_property_count_strings(np, "dma-names");
-	printk("SSSSSSSSSSSSSSSSSS of_property_count_strings of dma-names = %d\n", count); 
-	if (count < 0) {
-		printk("Count is less than 0\n");
-	}	
-	if (count > 0) {
-		//return count;
-
-		for (i = 0; i < count; i++) {
-			struct dma_chan *dc;
-			struct dma_channel *musb_dma;
-			const char *str;
-			unsigned is_tx;
-			unsigned int port;
-
-			ret = of_property_read_string_index(np, "dma-names", i, &str);
-			printk("hhhhhhhhhhhhhhhhhhhhhhhhh of_property_read_string_index i = %d, ret = ", i);
-			if (ret) {
-				printk(" ret was not 0??????????????????????????\n");
-			}
-				
-			if (strstarts(str, "tx"))
-				is_tx = 1;
-			else if (strstarts(str, "rx"))
-				is_tx = 0;
-			else {
-				dev_err(dev, "Wrong dmatype %s\n", str);
-				printk("NNNNNNNNNNNNNNNNNNNNNNNNNNN Wrong dmatype %s\n", str);
-				//goto err;
-			}
-/*
-			ret = kstrtouint(str + 2, 0, &port);
-			if (ret)
-				goto err;
-
-			ret = -EINVAL;
-			if (port > controller->num_channels || !port)
-				goto err;
-			if (is_tx)
-				cppi41_channel = &controller->tx_channel[port - 1];
-			else
-				cppi41_channel = &controller->rx_channel[port - 1];
-
-			cppi41_channel->controller = controller;
-			cppi41_channel->port_num = port;
-			cppi41_channel->is_tx = is_tx;
-			INIT_LIST_HEAD(&cppi41_channel->tx_check);
-
-			musb_dma = &cppi41_channel->channel;
-			musb_dma->private_data = cppi41_channel;
-			musb_dma->status = MUSB_DMA_STATUS_FREE;
-			musb_dma->max_len = SZ_4M;
-
-			dc = dma_request_chan(dev->parent, str);
-			if (IS_ERR(dc)) {
-				ret = PTR_ERR(dc);
-				if (ret != -EPROBE_DEFER)
-					dev_err(dev, "Failed to request %s: %d.\n",
-						str, ret);
-				goto err;
-			}
-
-			cppi41_channel->dc = dc;
-			*/
-		}
-	}
-	//return 0;
-
 
 	return controller;
 }

@@ -321,6 +321,9 @@
 			extcon = <&usbphy 0>;
 			allwinner,sram = <&otg_sram 1>;
 			status = "disabled";
+			dmas = <&dma SUN4I_DMA_NORMAL 21>,
+			       <&dma SUN4I_DMA_NORMAL 21>;
+			dma-names = "rx_ep_1",  "tx_ep_1";
 		};
 
 		usbphy: phy@1c13400 {
